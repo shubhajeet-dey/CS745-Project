@@ -1,0 +1,4 @@
+flask
+psycopg2
+mod_wsgi
+pyjwt

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h2>Welcome to the Bulletin Board</h2>
+    {% if 'email' in session %}
+        <form method="post" enctype="multipart/form-data">
+            <textarea name="content" cols="30" rows="5" required></textarea><br><br>
+     		<input type="hidden" name="csrf_token" value={{ csrf_token() }}>
+		<input type="submit" value="Post">
+        </form>
+        <br>
+        <h3>Posts:</h3>	
+        {% for post in posts %}
+            <p>{{ post[2] }} - {{ post[3] }} 
+            {% if post[1] == session['email'] %}
+                <form method="post" action="/posts/{{ post[0] }}/delete" style="display: inline;">
+				<input type="hidden" name="csrf_token" value={{ csrf_token() }}>
+				<input type="submit" value="Delete">
+                </form>
+            {% endif %}
+            </p>
+        {% endfor %}
+    {% else %}
+        <p>Please <a href="/login">login</a> to access the bulletin board.</p>
+    {% endif %}
+</body>
+</html>
